@@ -30,7 +30,7 @@
 
 
 // Macro which adds A, B, or C to the end of a function/taskname or constant
-// useful when including the file multiple times to create mutliple identical
+// useful when including the file multiple times to create multiple identical
 // functions with different names for thread-safety (making them inline didn't
 // work somehow).
 #define _ADD_MOTORNAME(funcname) funcname##RUNMOTOR_CURRENTPORTNAME
@@ -64,11 +64,11 @@ safecall bool _ADD_MOTORNAME(WaitUntilMotorStopped)(const byte &port) {
 RETURNS true if stopped by direct command
 
 This function waits until a braked motor has come to a full stop. The "trick" is
-that it's not only beeing waited until the motor has stopped for a very short
+that it's not only being waited until the motor has stopped for a very short
 time, but for certain period. This even works with oscillating movements as
 seen when jamming in the brake at full speed. Only monitoring if the motor "is at
 the same position as last time" wouldn't work because the oscillation could come
-accross the same position twice... This loop should work with different
+across the same position twice... This loop should work with different
 execution speeds, too.
 
 Actually I don't see quite why this function is this complex, but I'm pretty sure
@@ -129,7 +129,7 @@ I had my reasons when MotorControl 1.0 and 1.1 were developed...
 // argument port2 to it, and done. BEFORE the function, define RUNMOTOR2_SYNCMODE
 
 // note how RunMotor2 doesn't need to be inline and takes 1 more argument...
-// RETURN is wether a direct command stopped us!!!!
+// RETURN is whether a direct command stopped us!!!!
 #ifdef RUNMOTOR2_SYNCMODE
 bool        RunMotor2(const byte &port, const int &power, const long &tacholimit, const bool &speedreg, const bool &holdbrake, const bool &smoothstart, const byte &port2) {
 #else
@@ -148,21 +148,21 @@ so we stick with constant loop timing. Execution speed can vary since in the
 worst case, all 3 motors are controlled by this function, running in 3 threads
 at once. There is a 4th thread to listen for incoming messages, so we only have
 1 quarter of the NXT's original CPU power left per thread. We don't want to
-program statically, since than we'd allways have the worst case. Hence the
+program statically, since then we'd always have the worst case. Hence the
 dynamic busy waiting at the end, while still intelligently checking if the
 desired motor position has been reached (so the waiting is still useful in some
 way).
 
 So we've got a loop with constant execution time, and a PD-controller during
 deceleration. The motor-power will constantly be set down, linearly, dependent
-on its current position. This way, if it get's stuck (i.e. during braking the
+on its current position. This way, if it gets stuck (i.e. during braking the
 load somehow increases or the motor blocks), the controller adjusts the power
 accordingly (the controller has a given set-point for power, depending where
 in relation to our position target we stand).
 
 Since the loop is fairly slow in the worst case, we've got time to spare in the
 best case (2 threads running, 1 motor + 1 message listener). During the waiting
-time, we check if the motors get's close to its target -- this only matters
+time, we check if the motors gets close to its target -- this only matters
 during BRAKE stage.
 
 Yes, inside the big outer loop, there are different stages. During RAMPUP we can
@@ -176,7 +176,7 @@ closely monitor when our desired target is reached. In order to achieve this,
 we've got the ENDGAME mode.
 
 ENDGAME phase will be entered a couple of degrees before the motor reaches its
-goal. The PD controller should have succeded by now to enforce a really low
+goal. The PD controller should have succeeded by now to enforce a really low
 turning speed of the motor (just as we targeted/specified in our desired
 "speed at motor position" deceleration curve lookup table). The most important
 and most critical thing of the whole function is now to come to a stop at
@@ -218,7 +218,7 @@ to reach its target safely).
 
 
 // --- Reset counters etc
-//     * See below, now happens implicitely in MotorCmd*Reset
+//     * See below, now happens implicitly in MotorCmd*Reset
     
 // --- Decide if SIMPLE FUNCTION needed?
 //     * For small powers!
@@ -581,7 +581,7 @@ to reach its target safely).
             #endif// - - - - - - - - - -
 
 
-            // TODO maybe replace this variable (dont use it) and do it inline?
+            // TODO maybe replace this variable (don't use it) and do it inline?
             desiredSpeed = GetIdealSpeedFromPos(abs(MotorTachoCount(port) - brakingStartTacho), brakingStartSpeed, absBrakingDist);
 
             // shift/calculate all errors for current cycle
@@ -812,7 +812,7 @@ to reach its target safely).
                 }//end while
             }//end if
 
-            //if succesful or not, BRAKE (before debug)!
+            //if successful or not, BRAKE (before debug)!
             #ifndef RUNMOTOR2_SYNCMODE
                 MotorBrake(port);
             #else
@@ -864,7 +864,7 @@ to reach its target safely).
 //     * release when necessary at full stop
 
     //TODO what happens if during these final and "save" (esasy) stopping/braking
-    // phase, a new direct command arrives and does weired stuff? it will definitely
+    // phase, a new direct command arrives and does weird stuff? it will definitely
     // mess up our current motor state, maybe that's not too bad...
 
     #ifdef ENABLEDEBUGGING_REMOTELOGGING
@@ -940,14 +940,14 @@ to reach its target safely).
         TextOut(0, DebugLinePos[port], "FINISHED        ");
     #endif
     
-     // return wether a direct command stopped us...
+     // return whether a direct command stopped us...
     return stoppedByDirectCmd;
     
 
 }//end void
 
 
-// the following function must be an excact copy-paste-replica of the RunMotor
+// the following function must be an exact copy-paste-replica of the RunMotor
 // function from above, but with the name RunMotor2, the additional param port2,
 // RUNMOTOR2_SYNCMODE defined, and always speedreg=false. It also doesn't need
 // to be inline (to save space)...
