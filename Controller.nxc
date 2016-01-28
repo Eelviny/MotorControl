@@ -183,7 +183,7 @@ inline long GetAbsBrakingDistFromAbsSpeed2(const long &absSpeed) {
 */
 
 // Following is a "dirty" preprocessor trick. We include ControllerCore.nxc
-// twice, with different macros defined each time, leading two two different
+// twice, with different macros defined each time, leading to two different
 // functions being imported (RunMotor and RunMotor2).
 
 
@@ -207,7 +207,7 @@ inline long GetAbsBrakingDistFromAbsSpeed2(const long &absSpeed) {
 
 
 
-// Old comment: the following function must be an excact copy-paste-replica of the RunMotor
+// Old comment: the following function must be an exact copy-paste-replica of the RunMotor
 // function from above, but with the name RunMotor2, the additional param port2,
 // RUNMOTOR2_SYNCMODE defined, and always speedreg=false. It also doesn't need
 // to be inline (to save space)...
